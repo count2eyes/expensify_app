@@ -3,7 +3,7 @@
 exports[`render expense list with empty expense list 1`] = `
 <div>
   <h3>
-    You have no expenses history
+    You have no expense history
   </h3>
 </div>
 `;
@@ -14,7 +14,7 @@ exports[`render expense list with expenses from fixture 1`] = `
     amount={2650}
     createdAt={0}
     description="coffee"
-    id={1}
+    id="1"
     key="1"
     note=""
   />
@@ -22,7 +22,7 @@ exports[`render expense list with expenses from fixture 1`] = `
     amount={20065}
     createdAt={-345600000}
     description="breakfast"
-    id={2}
+    id="2"
     key="2"
     note=""
   />
@@ -30,7 +30,7 @@ exports[`render expense list with expenses from fixture 1`] = `
     amount={32065}
     createdAt={345600000}
     description="dinner"
-    id={3}
+    id="3"
     key="3"
     note=""
   />

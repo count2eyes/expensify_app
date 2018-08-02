@@ -1,6 +1,7 @@
+import moment from "moment";
 import expenses from "../fixtures/expenses";
 import expenseReducer from "../../reducers/expenses";
-import moment from "moment";
+import { setExpenses } from "../../actions/expenses";
 
 test("should return default expenses", () => {
   expect(expenseReducer(undefined, { type: "@@INIT" })).toEqual([]);
@@ -55,4 +56,27 @@ test("should add expense item", () => {
   const action = { type: "ADD_EXPENSE", expense: newExpenseItem };
   const state = expenseReducer(expenses, action);
   expect(state).toEqual([...expenses, newExpenseItem]);
+});
+
+test("should set expenses", () => {
+  const oldState = expenses;
+  const newExpenses = [
+    {
+      amount: 250,
+      description: "candy",
+      note: "",
+      createdAt: moment(0).add(2, "days"),
+      id: 4
+    },
+    {
+      amount: 230,
+      description: "ice-pop",
+      note: "",
+      createdAt: moment(0).add(-20, "days"),
+      id: 5
+    }
+  ];
+  const action = { type: "SET_EXPENSES", expenses: newExpenses };
+  const state = expenseReducer(oldState, action);
+  expect(state).toEqual(newExpenses);
 });

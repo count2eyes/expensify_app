@@ -4,9 +4,11 @@ import {
   startAddExpense,
   addExpense,
   removeExpense,
+  startRemoveExpense,
   editExpense,
   setExpenses,
-  startSetExpenses
+  startSetExpenses,
+  startEditExpense
 } from "../../actions/expenses";
 import expenses from "../fixtures/expenses";
 import database from "../../firebase/firebase";
@@ -34,6 +36,25 @@ test("remove expense action object", () => {
   });
 });
 
+test("should remove expense from firebase and dispatch removeExpense", done => {
+  const id = expenses[0].id;
+  const store = createMockStore({});
+  store
+    .dispatch(startRemoveExpense({ id }))
+    .then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: "REMOVE_EXPENSE",
+        id
+      });
+      return database.ref(`expenses/${id}`).once("value");
+    })
+    .then(snapshot => {
+      expect(snapshot.val()).toBeFalsy();
+      done();
+    });
+});
+
 test("edit expense action object", () => {
   const action = editExpense("hello123", { amount: 23 });
   expect(action).toEqual({
@@ -41,6 +62,24 @@ test("edit expense action object", () => {
     id: "hello123",
     updates: { amount: 23 }
   });
+});
+
+test("should edit expense in store and firebase", done => {
+  const store = createMockStore({});
+  const id = expenses[1].id;
+  const updates = { description: "Party", amount: 22500 };
+  store
+    .dispatch(startEditExpense(id, updates))
+    .then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({ type: "EDIT_EXPENSE", id, updates });
+      return database.ref(`expenses/${id}`).once("value");
+    })
+    .then(snapshot => {
+      expect(snapshot.val().description).toBe("Party");
+      expect(snapshot.val().amount).toBe(22500);
+      done();
+    });
 });
 
 test("should setup add expense action object w/ provided data", () => {

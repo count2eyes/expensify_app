@@ -10,8 +10,6 @@ export class EditExpensePage extends React.Component {
   };
 
   onRemove = () => {
-    // earlier code
-    // this.props.startRemoveExpense({ id: this.props.expense.id });
     this.props.startRemoveExpense(this.props.expense.id);
     this.props.history.push("/");
   };
@@ -19,8 +17,21 @@ export class EditExpensePage extends React.Component {
   render() {
     return (
       <div>
-        <ExpenseForm expense={this.props.expense} onSubmit={this.onSubmit} />
-        <button onClick={this.onRemove}>Remove</button>
+        <div className="page-header">
+          <div className="content-container">
+            <h1 className="page-header__title">Edit Expense</h1>
+          </div>
+        </div>
+
+        <div className="content-container">
+          <ExpenseForm expense={this.props.expense} onSubmit={this.onSubmit} />
+          <button
+            className="button__primary button__secondary"
+            onClick={this.onRemove}
+          >
+            Remove Expense
+          </button>
+        </div>
       </div>
     );
   }
@@ -31,13 +42,6 @@ const mapStateToProps = (state, props) => {
     expense: state.expenses.find(el => el.id === props.match.params.id)
   };
 };
-
-// also passed 'props' as 2nd argument for startRemoveExpense required props
-//
-// const mapDispatchToProps = (dispatch, props) => ({
-//   startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
-//   startRemoveExpense: id => dispatch(startRemoveExpense(id))
-// });
 
 const mapDispatchToProps = dispatch => ({
   startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
